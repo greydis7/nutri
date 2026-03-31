@@ -1,0 +1,139 @@
+/* styles.css — layout, variables, accessible typography (mobile-first)
+   - Base font-size >=16px
+   - CSS variables with AA-complaint color choices
+   - Grid/flex layout for landing
+   - :focus-visible rules with minimum contrast ~3:1 for indicators
+*/
+:root{
+  --bg: #ffffff; /* white */
+  --text: #0b0b0b; /* near-black for strong contrast */
+  --muted: #6b6b6b;
+  --primary: #00796b; /* teal dark — chosen for good contrast on white */
+  --primary-contrast: #ffffff;
+  --accent: #ffb300; /* amber accent */
+  --focus: #004D40; /* darker teal for focus rings (meets ~3:1 vs white) */
+  --max-width: 1100px;
+}
+
+html { box-sizing: border-box; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+*,*::before,*::after{ box-sizing: inherit; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-size:16px; /* >=16px for accessibility */
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Skip link: visually hidden until keyboard focus */
+.skip-link{
+  position:absolute;
+  left:-9999px;
+  top:auto;
+  width:1px;
+  height:1px;
+  overflow:hidden;
+}
+.skip-link:focus,
+.skip-link:focus-visible{
+  left:1rem;
+  top:1rem;
+  width:auto;
+  height:auto;
+  overflow:visible;
+  padding:0.5rem 0.75rem;
+  background:var(--text);
+  color:var(--bg);
+  z-index:1000;
+  text-decoration:none;
+  border-radius:6px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.12);
+}
+
+/* Focus-visible for interactive elements: contrast >= 3:1 against white background
+   Uses a 3px thick outline (visible) and small offset. */
+:where(a,button,input,textarea,select){ outline: none; }
+:where(a,button,input,textarea,select):focus-visible{
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+/* Buttons and primary actions */
+.button-primary, .btn-primary, a.btn-primary{
+  display:inline-block;
+  background:var(--primary);
+  color:var(--primary-contrast);
+  padding:0.6rem 1rem;
+  border-radius:8px;
+  text-decoration:none;
+  border: none;
+}
+
+.container{
+  max-width:var(--max-width);
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:1rem;
+  padding-right:1rem;
+}
+
+/* Header */
+.site-header{ background:transparent; }
+.header-inner{ display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:0.75rem 0; }
+.logo img{ display:block; max-height:48px; }
+.nav-toggle{ background:transparent; border:none; font-size:1.25rem; }
+
+.primary-nav ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.5rem; }
+.primary-nav a{ color:var(--text); text-decoration:none; padding:0.25rem 0.5rem; border-radius:6px; }
+.primary-nav a:focus-visible{ background:rgba(0,0,0,0.04); }
+.primary-nav.open{ display:block; }
+
+/* Hero */
+.hero{ padding:2.25rem 0; text-align:center; }
+.hero h1{ font-size:1.5rem; margin:0 0 0.5rem; }
+.hero-subtitle, .hero h2{ margin:0 0 1rem; color:var(--muted); font-weight:500; font-size:1rem; }
+
+/* Benefits grid */
+.benefit-list{ display:grid; grid-template-columns:1fr; gap:1rem; padding:1rem 0 2rem; }
+.benefit{ background:rgba(0,0,0,0.03); padding:1rem; border-radius:10px; }
+
+/* Footer */
+.footer-inner{ padding:1.25rem 0; font-size:0.95rem; color:var(--muted); }
+
+/* Desktop layouts */
+@media (min-width: 640px){
+  .hero h1{ font-size:2rem; }
+}
+@media (min-width: 768px){
+  .nav-toggle{ display:none; }
+  .primary-nav ul{ flex-direction:row; gap:1.25rem; align-items:center; }
+  .hero{ display:grid; grid-template-columns:1fr 420px; gap:2rem; align-items:center; padding:4rem 0; }
+  .hero .container{ display:contents; }
+  .benefit-list{ grid-template-columns:repeat(3,1fr); }
+}
+
+/* Small adjustments for high-contrast or reduced motion users */
+@media (prefers-reduced-motion: reduce){ *{ transition:none!important; } }
+
+/* Utilities */
+.visually-hidden{ position:absolute!important; left:-9999px!important; top:auto!important; width:1px!important; height:1px!important; overflow:hidden!important; }
+
+/* Contact form styles */
+.contact-form{ background:transparent; margin:1rem 0 0; }
+.contact-form .form-row{ display:block; gap:1rem; }
+.form-field{ margin-bottom:0.75rem; }
+.form-field label{ display:block; font-weight:600; margin-bottom:0.25rem; }
+.form-field input,
+.form-field textarea{ width:100%; padding:0.5rem 0.6rem; border:1px solid rgba(0,0,0,0.12); border-radius:8px; font:inherit; }
+.form-field input:focus-visible, .form-field textarea:focus-visible{ outline:3px solid var(--focus); outline-offset:3px; }
+.help-text{ display:block; font-size:0.9rem; color:var(--muted); margin-top:0.25rem; }
+.error-message{ color:#b00020; font-size:0.95rem; min-height:1.2em; margin-top:0.25rem; }
+.form-actions{ display:flex; gap:1rem; align-items:center; margin-top:0.75rem; }
+.form-status{ color:var(--muted); font-size:0.95rem; }
+
+@media (min-width:640px){
+  .contact-form .form-row{ display:flex; gap:1rem; }
+  .contact-form .form-row .form-field{ flex:1; }
+}
